@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            SQL_ENGINE_VERSION: [2017,2019,2022]
+            SQL_ENGINE_VERSION: [2019,2022]
             COLLATION: [SQL_Latin1_General_CP1_CS_AS]
         
 
@@ -35,20 +35,20 @@ jobs:
 
         - name: Check SQL Install
           run: | 
-              sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "SELECT @@version as Version;" -I -b -t 60 -No
-              sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "SELECT SERVERPROPERTY('Collation') AS Collation;" -I -b -t 60 -No
+              sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "SELECT @@version as Version;" -I -b -t 60
+              sqlcmd -S localhost -U sa -P dbatools.I0 -d tempdb -Q "SELECT SERVERPROPERTY('Collation') AS Collation;" -I -b -t 60
 
         - name: Deploy FRK
           run: | 
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzCache.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzWho.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_Blitz.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzFirst.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzAnalysis.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzBackups.sql" -I -b -t 60 -No 
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzIndex.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzLock.sql" -I -b -t 60 -No
-            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -Q "SELECT * FROM sys.procedures WHERE name LIKE 'sp_Blitz%';" -I -b -t 60 -No
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzCache.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzWho.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_Blitz.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzFirst.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzAnalysis.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzBackups.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzIndex.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -i "sp_BlitzLock.sql" -I -b -t 60
+            sqlcmd -S localhost -U sa -P dbatools.I0 -d master -Q "SELECT * FROM sys.procedures WHERE name LIKE 'sp_Blitz%';" -I -b -t 60
 
         - name: Run Pester Tests
           shell: pwsh
